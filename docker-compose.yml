@@ -1,0 +1,24 @@
+version: "3.1"
+
+services:
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    networks:
+      - monitoring
+    volumes:
+      - ./config.yml:/etc/alertmanager/config.yml
+    deploy:
+      placement:
+        constraints: [node.labels.node-role == infra]
+    labels:
+      container-type: "monitoring"
+
+networks:
+    monitoring:
+      external:
+        name: monitoring
+
+volumes:
+    prometheus:
